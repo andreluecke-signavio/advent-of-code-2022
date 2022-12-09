@@ -61,39 +61,13 @@ impl Rope {
     }
 
     fn move_tail_segment(&mut self, tail_index: usize, relative_to: Position) {
-        if relative_to.x == self.tail_segments[tail_index].x && relative_to.y - self.tail_segments[tail_index].y > 1 {
-            self.tail_segments[tail_index].y += 1;
-        } else if relative_to.x == self.tail_segments[tail_index].x && relative_to.y - self.tail_segments[tail_index].y < -1 {
-            self.tail_segments[tail_index].y -= 1;
-        } else if relative_to.x - self.tail_segments[tail_index].x > 1 && relative_to.y == self.tail_segments[tail_index].y {
-            self.tail_segments[tail_index].x += 1;
-        } else if relative_to.x - self.tail_segments[tail_index].x < -1 && relative_to.y == self.tail_segments[tail_index].y {
-            self.tail_segments[tail_index].x -= 1;
-        } else if relative_to.y - self.tail_segments[tail_index].y > 1 && relative_to.x > self.tail_segments[tail_index].x {
-            self.tail_segments[tail_index].x += 1;
-            self.tail_segments[tail_index].y += 1;
-        } else if relative_to.y - self.tail_segments[tail_index].y > 1 && relative_to.x < self.tail_segments[tail_index].x {
-            self.tail_segments[tail_index].x -= 1;
-            self.tail_segments[tail_index].y += 1;
-        } else if relative_to.y - self.tail_segments[tail_index].y < -1 && relative_to.x > self.tail_segments[tail_index].x {
-            self.tail_segments[tail_index].x += 1;
-            self.tail_segments[tail_index].y -= 1;
-        } else if relative_to.y - self.tail_segments[tail_index].y < -1 && relative_to.x < self.tail_segments[tail_index].x {
-            self.tail_segments[tail_index].x -= 1;
-            self.tail_segments[tail_index].y -= 1;
-        } else if relative_to.x - self.tail_segments[tail_index].x > 1 && relative_to.y > self.tail_segments[tail_index].y {
-            self.tail_segments[tail_index].x += 1;
-            self.tail_segments[tail_index].y += 1;
-        } else if relative_to.x - self.tail_segments[tail_index].x > 1 && relative_to.y < self.tail_segments[tail_index].y {
-            self.tail_segments[tail_index].x += 1;
-            self.tail_segments[tail_index].y -= 1;
-        } else if relative_to.x - self.tail_segments[tail_index].x < -1 && relative_to.y > self.tail_segments[tail_index].y {
-            self.tail_segments[tail_index].x -= 1;
-            self.tail_segments[tail_index].y += 1;
-        } else if relative_to.x - self.tail_segments[tail_index].x < -1 && relative_to.y < self.tail_segments[tail_index].y {
-            self.tail_segments[tail_index].x -= 1;
-            self.tail_segments[tail_index].y -= 1;
+        let (delta_x, delta_y) = (relative_to.x - self.tail_segments[tail_index].x, relative_to.y - self.tail_segments[tail_index].y);
+
+        if delta_x.abs() > 1 || delta_y.abs() > 1 {
+            self.tail_segments[tail_index].x += delta_x.signum();
+            self.tail_segments[tail_index].y += delta_y.signum();
         }
+
         if tail_index == self.tail_segments.len() - 1 {
             self.visited.insert(self.tail_segments[tail_index].clone());
         }
@@ -122,7 +96,7 @@ pub fn part_one(input: &str) -> Option<usize> {
 pub fn part_two(input: &str) -> Option<usize> {
     let mut rope = Rope {
         head: Position { x: 0, y: 0 },
-        tail_segments: (0..9).into_iter().map(|_| Position{x: 0, y: 0}).collect::<Vec<_>>(),
+        tail_segments: (0..9).into_iter().map(|_| Position { x: 0, y: 0 }).collect::<Vec<_>>(),
         visited: HashSet::new(),
     };
 
