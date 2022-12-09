@@ -83,7 +83,7 @@ pub fn part_one(input: &str) -> Option<usize> {
     };
 
     input.lines().for_each(|line| {
-        let (direction, distance) = line.split_once(" ").unwrap();
+        let (direction, distance) = line.split_once(' ').unwrap();
         let distance = distance.parse::<i64>().unwrap();
         rope.apply_move(direction, distance);
     });
@@ -101,7 +101,7 @@ pub fn part_two(input: &str) -> Option<usize> {
     };
 
     input.lines().for_each(|line| {
-        let (direction, distance) = line.split_once(" ").unwrap();
+        let (direction, distance) = line.split_once(' ').unwrap();
         let distance = distance.parse::<i64>().unwrap();
         rope.apply_move(direction, distance);
     });

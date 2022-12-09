@@ -5,7 +5,7 @@ struct Range {
 
 impl From<&str> for Range {
     fn from(s: &str) -> Self {
-        let (s1, s2) = s.split_once("-").unwrap();
+        let (s1, s2) = s.split_once('-').unwrap();
         Range {
             start: s1.parse().unwrap(),
             end: s2.parse().unwrap(),
@@ -16,7 +16,7 @@ impl From<&str> for Range {
 
 pub fn part_one(input: &str) -> Option<usize> {
     let range_pairs = input.lines().map(|line| {
-        let (s1, s2) = line.split_once(",").unwrap();
+        let (s1, s2) = line.split_once(',').unwrap();
         let range1 = Range::from(s1);
         let range2 = Range::from(s2);
         (range1, range2)
@@ -32,7 +32,7 @@ pub fn part_one(input: &str) -> Option<usize> {
 
 pub fn part_two(input: &str) -> Option<usize> {
     let range_pairs = input.lines().map(|line| {
-        let (s1, s2) = line.split_once(",").unwrap();
+        let (s1, s2) = line.split_once(',').unwrap();
         let range1 = Range::from(s1);
         let range2 = Range::from(s2);
         (range1, range2)

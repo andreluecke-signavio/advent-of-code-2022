@@ -19,11 +19,11 @@ pub fn part_one(input: &str) -> Option<u32> {
 
         s1.chars().for_each(|c| {
             let n = chars_to_prio[c as usize];
-            x1 = x1 | (1 << (n - 1) as u64)
+            x1 |= 1 << (n - 1) as u64
         });
         s2.chars().for_each(|c| {
             let n = chars_to_prio[c as usize];
-            x2 = x2 | (1 << (n - 1) as u64)
+            x2 |= 1 << (n - 1) as u64
         });
         (x1 & x2).trailing_zeros() + 1
     })
@@ -44,7 +44,7 @@ fn chars_to_prio() -> Vec<u32> {
             result.push(0);
         }
     }
-    return result;
+    result
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
@@ -58,11 +58,10 @@ pub fn part_two(input: &str) -> Option<u32> {
             let mut bits: u64 = 0;
             s.chars().for_each(|c| {
                 let n = chars_to_prio[c as usize];
-                bits = bits | (1 << (n - 1) as u64);
+                bits |= 1 << (n - 1) as u64;
             });
-            common_bit = common_bit & bits;
+            common_bit &= bits;
         }
-        // println!("c {:064b}", common_bit);
         common_bit.trailing_zeros() + 1
     })
         .sum::<u32>();

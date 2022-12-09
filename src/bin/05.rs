@@ -33,7 +33,7 @@ pub fn part_one(input: &str) -> Option<String> {
 
 
     let result = area.into_iter().map(|mut v| {
-        v.pop().unwrap_or("".to_string())
+        v.pop().unwrap_or_else(|| "".to_string())
     })
         .collect::<String>();
 
@@ -61,7 +61,7 @@ pub fn part_two(input: &str) -> Option<String> {
 
 
     let result = area.into_iter().map(|mut v| {
-        v.pop().unwrap_or("".to_string())
+        v.pop().unwrap_or_else(|| "".to_string())
     })
         .collect::<String>();
 
@@ -75,7 +75,7 @@ fn prepare_area(input: &str) -> (Vec<&str>, Vec<Vec<String>>) {
     let mut switch = false;
     for line in input.lines() {
         // println!("line: {}", line);
-        if line.len() == 0 {
+        if line.is_empty() {
             switch = true;
             continue;
         }
@@ -99,7 +99,7 @@ fn prepare_area(input: &str) -> (Vec<&str>, Vec<Vec<String>>) {
             let c = line.chars().skip(i + 1).take(1).collect::<String>();
             // println!("i: {}, c: {}", i, c);
             if !c.trim().is_empty() {
-                area[i / 4 as usize].push(c);
+                area[i / 4_usize].push(c);
             }
         }
     });

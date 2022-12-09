@@ -1,5 +1,3 @@
-use std::cmp::max;
-
 pub fn part_one(input: &str) -> Option<u32> {
     let grid = build_grid(input);
 
@@ -9,7 +7,7 @@ pub fn part_one(input: &str) -> Option<u32> {
         for x in 1..grid[y].len() - 1 {
             let height = grid[y][x];
             if is_visible(&grid, x, y, height) {
-                visible = visible + 1;
+                visible += 1;
             }
         }
     }
@@ -42,32 +40,32 @@ fn build_grid(input: &str) -> Vec<Vec<u32>> {
     grid
 }
 
-fn is_visible(grid: &Vec<Vec<u32>>, x: usize, y: usize, height: u32) -> bool {
+fn is_visible(grid: &[Vec<u32>], x: usize, y: usize, height: u32) -> bool {
     is_visible_left(grid, x, y, height)
         || is_visible_right(grid, x, y, height)
         || is_visible_up(grid, x, y, height)
         || is_visible_down(grid, x, y, height)
 }
 
-fn is_visible_down(grid: &Vec<Vec<u32>>, x: usize, y: usize, height: u32) -> bool {
-    for i in y + 1..grid.len() {
-        if grid[i][x] >= height {
+fn is_visible_down(grid: &[Vec<u32>], x: usize, y: usize, height: u32) -> bool {
+    for column in grid.iter().skip(y + 1) {
+        if column[x] >= height {
             return false;
         }
     }
     true
 }
 
-fn is_visible_up(grid: &Vec<Vec<u32>>, x: usize, y: usize, height: u32) -> bool {
-    for i in 0..y {
-        if grid[i][x] >= height {
+fn is_visible_up(grid: &[Vec<u32>], x: usize, y: usize, height: u32) -> bool {
+    for column in grid.iter().take(y) {
+        if column[x] >= height {
             return false;
         }
     }
     true
 }
 
-fn is_visible_right(grid: &Vec<Vec<u32>>, x: usize, y: usize, height: u32) -> bool {
+fn is_visible_right(grid: &[Vec<u32>], x: usize, y: usize, height: u32) -> bool {
     for i in x + 1..grid[y].len() {
         if grid[y][i] >= height {
             return false;
@@ -76,7 +74,7 @@ fn is_visible_right(grid: &Vec<Vec<u32>>, x: usize, y: usize, height: u32) -> bo
     true
 }
 
-fn is_visible_left(grid: &Vec<Vec<u32>>, x: usize, y: usize, height: u32) -> bool {
+fn is_visible_left(grid: &[Vec<u32>], x: usize, y: usize, height: u32) -> bool {
     for i in 0..x {
         if grid[y][i] >= height {
             return false;
@@ -86,17 +84,17 @@ fn is_visible_left(grid: &Vec<Vec<u32>>, x: usize, y: usize, height: u32) -> boo
 }
 
 
-fn compute_scenic_score(grid: &Vec<Vec<u32>>, x: usize, y: usize, height: u32) -> u64 {
+fn compute_scenic_score(grid: &[Vec<u32>], x: usize, y: usize, height: u32) -> u64 {
     score_left(grid, x, y, height)
         * score_right(grid, x, y, height)
         * score_up(grid, x, y, height)
         * score_down(grid, x, y, height)
 }
 
-fn score_left(grid: &Vec<Vec<u32>>, x: usize, y: usize, height: u32) -> u64 {
+fn score_left(grid: &[Vec<u32>], x: usize, y: usize, height: u32) -> u64 {
     let mut count = 0;
     for i in (0..x).rev() {
-        count = count + 1;
+        count += 1;
         if grid[y][i] >= height {
             break;
         }
@@ -104,10 +102,10 @@ fn score_left(grid: &Vec<Vec<u32>>, x: usize, y: usize, height: u32) -> u64 {
     count
 }
 
-fn score_right(grid: &Vec<Vec<u32>>, x: usize, y: usize, height: u32) -> u64 {
+fn score_right(grid: &[Vec<u32>], x: usize, y: usize, height: u32) -> u64 {
     let mut count = 0;
     for i in x + 1..grid[y].len() {
-        count = count + 1;
+        count += 1;
         if grid[y][i] >= height {
             break;
         }
@@ -115,10 +113,10 @@ fn score_right(grid: &Vec<Vec<u32>>, x: usize, y: usize, height: u32) -> u64 {
     count
 }
 
-fn score_up(grid: &Vec<Vec<u32>>, x: usize, y: usize, height: u32) -> u64 {
+fn score_up(grid: &[Vec<u32>], x: usize, y: usize, height: u32) -> u64 {
     let mut count = 0;
     for i in (0..y).rev() {
-        count = count + 1;
+        count += 1;
         if grid[i][x] >= height {
             break;
         }
@@ -126,11 +124,11 @@ fn score_up(grid: &Vec<Vec<u32>>, x: usize, y: usize, height: u32) -> u64 {
     count
 }
 
-fn score_down(grid: &Vec<Vec<u32>>, x: usize, y: usize, height: u32) -> u64 {
+fn score_down(grid: &[Vec<u32>], x: usize, y: usize, height: u32) -> u64 {
     let mut count = 0;
-    for i in y + 1..grid.len() {
-        count = count + 1;
-        if grid[i][x] >= height {
+    for column in grid.iter().skip(y + 1) {
+        count += 1;
+        if column[x] >= height {
             break;
         }
     }

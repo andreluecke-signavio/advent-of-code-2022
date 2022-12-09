@@ -5,7 +5,7 @@ pub fn part_one(input: &str) -> Option<u32> {
     for s in input.lines() {
         match s.parse::<u32>() {
             Ok(n) => {
-                current_cals = current_cals + n;
+                current_cals += n;
                 if current_cals > most_cals {
                     most_cals = current_cals;
                 }
@@ -25,7 +25,7 @@ pub fn part_two(input: &str) -> Option<u32> {
     for s in input.lines() {
         match s.parse::<u32>() {
             Ok(n) => {
-                current_cals = current_cals + n;
+                current_cals += n;
             }
             Err(_) => {
                 elves_calories.push(current_cals);

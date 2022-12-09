@@ -1,5 +1,5 @@
+#[allow(clippy::identity_op)]
 pub fn part_one(input: &str) -> Option<u32> {
-
     let result = input.lines().map(|s| {
         match s {
             "A X" => 1 + 3,
@@ -19,8 +19,8 @@ pub fn part_one(input: &str) -> Option<u32> {
     Some(result)
 }
 
+#[allow(clippy::identity_op)]
 pub fn part_two(input: &str) -> Option<u32> {
-
     let result = input.lines().map(|s| {
         match s {
             "A X" => 3 + 0,
@@ -38,7 +38,6 @@ pub fn part_two(input: &str) -> Option<u32> {
         .sum();
 
     Some(result)
-
 }
 
 fn main() {

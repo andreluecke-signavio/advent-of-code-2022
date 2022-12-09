@@ -31,10 +31,10 @@ fn create_directory_flatmap(input: &str) -> HashMap<String, (u64, Vec<u64>)> {
                 }
             }
         } else if re_ls.is_match(line) {
-            return;
+            // do nothing
         } else if let Some(captures) = re_dir.captures(line) {
             let dir = current.clone() + captures.get(1).unwrap().as_str() + "/";
-            add_directory_to_flatmap(&mut directory_flatmap, dir.clone());
+            add_directory_to_flatmap(&mut directory_flatmap, dir);
         } else if let Some(captures) = re_file.captures(line) {
             let file_size = captures.get(1).unwrap().as_str().parse::<u64>().unwrap();
             add_file_size_recursively(&mut directory_flatmap, &current, file_size);
@@ -47,13 +47,11 @@ fn create_directory_flatmap(input: &str) -> HashMap<String, (u64, Vec<u64>)> {
 }
 
 fn add_directory_to_flatmap(directory_flatmap: &mut HashMap<String, (u64, Vec<u64>)>, dir: String) {
-    if !directory_flatmap.contains_key(&dir) {
-        directory_flatmap.insert(dir.clone(), (0, vec![]));
-    }
+    directory_flatmap.entry(dir).or_insert((0, vec![]));
 }
 
 fn add_file_size_recursively(map: &mut HashMap<String, (u64, Vec<u64>)>, current: &str, file_size: u64) {
-    map.get_mut(current.clone()).unwrap().0 = map.get(current.clone()).unwrap().0 + file_size;
+    map.get_mut(current).unwrap().0 = map.get(current).unwrap().0 + file_size;
     if current == "/" {
         return;
     }
@@ -62,8 +60,8 @@ fn add_file_size_recursively(map: &mut HashMap<String, (u64, Vec<u64>)>, current
 }
 
 fn move_one_directory_up(dir: &str) -> String {
-    dir.trim_end_matches("/")
-        .rsplit_once("/")
+    dir.trim_end_matches('/')
+        .rsplit_once('/')
         .unwrap().0.to_string()
         + "/"
 }
@@ -89,7 +87,7 @@ pub fn part_two(input: &str) -> Option<u64> {
         .filter(|size| *size >= (30_000_000 - diff))
         .collect::<Vec<_>>();
 
-    values.sort();
+    values.sort_unstable();
     Some(*values.get(0).unwrap())
 }
 
